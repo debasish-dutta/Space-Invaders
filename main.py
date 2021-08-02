@@ -8,6 +8,7 @@ pygame.display.set_caption('Space Invaders')
 
 #fonts
 pygame.font.init()
+pygame.mixer.init()
 
 # Enemy ships
 RED_SPACE_SHIP = pygame.image.load("Space Invaders\Graphics\ships\ship_red.png").convert_alpha()
@@ -31,6 +32,12 @@ BLUE_LASER = pygame.transform.rotozoom(BLUE_LASER, 180, 0.5)
 MAIN_LASER = pygame.image.load("Space Invaders\Graphics\missiles\sm.png").convert_alpha()
 MAIN_LASER = pygame.transform.rotozoom(MAIN_LASER, 0, 0.5)
 
+#SOunds
+shoot_sound = pygame.mixer.Sound("Space Invaders\Audio\laserRetro_004.ogg")
+shoot_sound.set_volume(0.5)
+
+bg_music = pygame.mixer.Sound("Space Invaders\Audio\Battle Theme.mp3")
+bg_music.set_volume(0.5)
 
 #colors
 BLACK = (0, 0, 0)
@@ -181,7 +188,6 @@ def main():
     main_font = pygame.font.SysFont("comicsans", 30)
     lost_font = pygame.font.SysFont("comicsans",40)
 
-
     def redraw_window():
         WIN.fill(BLACK)
 
@@ -237,6 +243,7 @@ def main():
             player.y += player_vel
         if keys[pygame.K_SPACE]:
             player.shoot()
+            shoot_sound.play()
         
         for enemy in enemies[:]:
             enemy.move(enemy_vel)
@@ -258,6 +265,7 @@ def main():
         
 def main_menu():
     title_font = pygame.font.SysFont("comicsans", 70)
+    bg_music.play(loops = -1)
     run = True
     while run:
         WIN.fill(BLACK)
